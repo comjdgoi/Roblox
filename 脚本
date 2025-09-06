@@ -1,0 +1,14 @@
+-- init
+local writer = require(game:GetService("ReplicatedStorage").Modules.Buffers).Writer.new(true)
+writer:WriteUInt64(game.Players.LocalPlayer.UserId)
+writer:WriteDouble(1.23)
+local buffer = writer:ToBufferWithLength()
+
+-- remove ui
+local rollui = game:GetService("Players").LocalPlayer.PlayerGui.Fullscreen_RollingUI
+rollui:Destroy()
+
+-- loop
+game:GetService("RunService").Heartbeat:Connect(function()
+    game:GetService("ReplicatedStorage").Remotes.Roll:FireServer(buffer)
+end)
